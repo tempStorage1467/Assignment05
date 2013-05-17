@@ -8,6 +8,7 @@
 #define PQueue_Vector_Included
 
 #include <string>
+#include "vector.h"
 using namespace std;
 
 /* A class representing a priority queue backed by an
@@ -44,6 +45,8 @@ private:
 	// TODO: Fill this in with the implementation of your unsorted vector
 	// priority queue.  You can add any fields, types, or methods that you
 	// wish.
+    Vector<string> storage;
+    int getSmallestIndex();
 };
 
 #endif

@@ -10,6 +10,14 @@
 #include <string>
 using namespace std;
 
+/* Type: Cell
+ * A cell in a linked list.
+ */
+struct Cell {
+	string value;
+	Cell* next = NULL;
+};
+
 /* A class representing a priority queue backed by a sorted,
  * singly-linked list.
  */
@@ -44,6 +52,11 @@ private:
 	// TODO: Fill this in with the implementation of your sorted linked list
 	// priority queue.  You can add any fields, types, or methods that you
 	// wish.
+    Cell* list;
+    int listSize;
+    
+    // useful for debugging
+    void printLinkedList();
 };
 
 #endif

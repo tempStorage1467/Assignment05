@@ -17,30 +17,43 @@ VectorPriorityQueue::~VectorPriorityQueue() {
 }
 
 int VectorPriorityQueue::size() {
-	// TODO: Fill this in!
-	
-	return 0;
+	return storage.size();
 }
 
 bool VectorPriorityQueue::isEmpty() {
-	// TODO: Fill this in!
-	
-	return true;
+	return (storage.size() == 0);
 }
 
 void VectorPriorityQueue::enqueue(string value) {
-	// TODO: Fill this in!
+    storage.add(value);
 }
 
 string VectorPriorityQueue::peek() {
-	// TODO: Fill this in!
-	
-	return "";
+    if (isEmpty()) {
+        error("The queue is empty");
+    }
+    int smallestIndex = getSmallestIndex();
+    return storage[smallestIndex];
 }
 
 string VectorPriorityQueue::dequeueMin() {
-	// TODO: Fill this in!
-	
-	return "";
+    if (isEmpty()) {
+        error("The queue is empty");
+    }
+    int smallestIndex = getSmallestIndex();
+    string val = storage[smallestIndex];
+    storage.remove(smallestIndex);
+    return val;
+}
+
+int VectorPriorityQueue::getSmallestIndex() {
+    if (isEmpty()) error("The queue is empty");
+    int smallestIndex = 0;
+    for (int i = 0; i < storage.size(); i++) {
+        if (storage[i] < storage[smallestIndex]) {
+            smallestIndex = i;
+        }
+    }
+    return smallestIndex;
 }
 
