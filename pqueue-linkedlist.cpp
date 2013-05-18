@@ -18,7 +18,9 @@ LinkedListPriorityQueue::LinkedListPriorityQueue() {
 }
 
 LinkedListPriorityQueue::~LinkedListPriorityQueue() {
-	// TODO: Fill this in!
+    while (!isEmpty()) {
+        dequeueMin();
+    }
 }
 
 int LinkedListPriorityQueue::size() {

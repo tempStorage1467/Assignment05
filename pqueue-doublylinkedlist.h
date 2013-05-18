@@ -8,7 +8,19 @@
 #define PQueue_DoublyLinkedList_Included
 
 #include <string>
+#include <iostream>
+#include "simpio.h"
+
 using namespace std;
+
+/* Type: Cell
+ * A cell in a linked list.
+ */
+struct DlCell {
+	string value;
+	DlCell* next = NULL;
+	DlCell* previous = NULL;
+};
 
 /* A class representing a priority queue backed by an unsorted,
  * doubly-linked list.
@@ -44,6 +56,10 @@ private:
 	// TODO: Fill this in with the implementation of your doubly-linked list
 	// priority queue.  You can add any fields, types, or methods that you
 	// wish.
+    DlCell* list;
+    int numCells;
+    DlCell* findMinCell();
+    void printLinkedList();
 };
 
 #endif
