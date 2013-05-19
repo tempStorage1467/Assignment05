@@ -1,8 +1,9 @@
 /*************************************************************
  * File: pqueue-linkedlist.cpp
  *
- * Implementation file for the LinkedListPriorityQueue
- * class.
+ * Name: Eric Beach
+ * Section: Dawson Zhou
+ * Implementation file for the LinkedListPriorityQueue class.
  */
  
 #include "pqueue-linkedlist.h"
@@ -12,25 +13,40 @@
 #include <iostream>
 #include "simpio.h"
 
+/*
+ * Constructor to start the list empty and initialize the list size as empty.
+ */
 LinkedListPriorityQueue::LinkedListPriorityQueue() {
     list = NULL;
     listSize = 0;
 }
 
+/*
+ * Destructor to empty the queue and deallocate memory.
+ */
 LinkedListPriorityQueue::~LinkedListPriorityQueue() {
     while (!isEmpty()) {
         dequeueMin();
     }
 }
 
+/*
+ * Return the size of the list.
+ */
 int LinkedListPriorityQueue::size() {
     return listSize;
 }
 
+/*
+ * Return whether the current queue is empty.
+ */
 bool LinkedListPriorityQueue::isEmpty() {
 	return (size() == 0);
 }
 
+/*
+ * Add a new element to the queue and place it at the proper sorted location.
+ */
 void LinkedListPriorityQueue::enqueue(string value) {
     Cell* newCell = new Cell;
 	newCell->value = value;
@@ -46,10 +62,8 @@ void LinkedListPriorityQueue::enqueue(string value) {
         Cell* last;
         do {
             last = curr;
-           // cout << "Last: " << last->value << endl;
             curr = curr->next;
             if (curr != NULL) {
-          //      cout << "Current: " << curr->value << endl;
             }
         } while (curr != NULL && newCell->value >curr->value);
 
@@ -60,11 +74,17 @@ void LinkedListPriorityQueue::enqueue(string value) {
     printLinkedList();
 }
 
+/*
+ * Look at the smallest element in the queue.
+ */
 string LinkedListPriorityQueue::peek() {
 	if (isEmpty()) error("Cannot peek at an empty list");
 	return list->value;
 }
 
+/*
+ * Remove the smallest element from the queue and return it to the caller.
+ */
 string LinkedListPriorityQueue::dequeueMin() {
 	if (isEmpty()) error("Cannot peek at an empty list");
     printLinkedList();
@@ -80,8 +100,11 @@ string LinkedListPriorityQueue::dequeueMin() {
 	return val;
 }
 
+/*
+ * Helper function used for debugging.
+ */
 void LinkedListPriorityQueue::printLinkedList() {
-    return;
+    // return;
     cout << "going to print linked list of size " << listSize << endl;
     for (Cell* current = list;
          current != NULL;

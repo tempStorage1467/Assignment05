@@ -1,8 +1,9 @@
 /**********************************************
  * File: pqueue-vector.h
  *
- * A priority queue class backed by an unsorted
- * vector.
+ * Name: Eric Beach
+ * Section: Dawson Zhou
+ * A priority queue class backed by an unsorted vector.
  */
 #ifndef PQueue_Vector_Included
 #define PQueue_Vector_Included
@@ -11,8 +12,7 @@
 #include "vector.h"
 using namespace std;
 
-/* A class representing a priority queue backed by an
- * unsorted Vector.
+/* A class representing a priority queue backed by an unsorted Vector.
  */
 class VectorPriorityQueue {
 public:
@@ -42,10 +42,10 @@ public:
 	string dequeueMin();
 
 private:
-	// TODO: Fill this in with the implementation of your unsorted vector
-	// priority queue.  You can add any fields, types, or methods that you
-	// wish.
+    // vector to store queue elements
     Vector<string> storage;
+
+    // get the index number of the smallest element
     int getSmallestIndex();
 };
 

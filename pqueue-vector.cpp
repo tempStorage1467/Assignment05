@@ -1,33 +1,38 @@
 /*************************************************************
  * File: pqueue-vector.cpp
  *
- * Implementation file for the VectorPriorityQueue
- * class.
+ * Name: Eric Beach
+ * Section: Dawson Zhou
+ * Implementation file for the VectorPriorityQueue class.
  */
  
 #include "pqueue-vector.h"
 #include "error.h"
 
-VectorPriorityQueue::VectorPriorityQueue() {
-	// TODO: Fill this in!
-}
-
-VectorPriorityQueue::~VectorPriorityQueue() {
-	// TODO: Fill this in!
-}
-
+/*
+ * Return the current size of the queue.
+ */
 int VectorPriorityQueue::size() {
 	return storage.size();
 }
 
+/*
+ * Return whether the queue is empty.
+ */
 bool VectorPriorityQueue::isEmpty() {
 	return (storage.size() == 0);
 }
 
+/*
+ * Add a string to the end of the queue.
+ */
 void VectorPriorityQueue::enqueue(string value) {
     storage.add(value);
 }
 
+/*
+ * Look at the value of the next element to be dequeued.
+ */
 string VectorPriorityQueue::peek() {
     if (isEmpty()) {
         error("The queue is empty");
@@ -36,6 +41,9 @@ string VectorPriorityQueue::peek() {
     return storage[smallestIndex];
 }
 
+/*
+ * Remove and return the smallest element in the queue.
+ */
 string VectorPriorityQueue::dequeueMin() {
     if (isEmpty()) {
         error("The queue is empty");
@@ -46,6 +54,9 @@ string VectorPriorityQueue::dequeueMin() {
     return val;
 }
 
+/*
+ * Get the index number of the smallest element in the queue.
+ */
 int VectorPriorityQueue::getSmallestIndex() {
     if (isEmpty()) error("The queue is empty");
     int smallestIndex = 0;
@@ -56,4 +67,3 @@ int VectorPriorityQueue::getSmallestIndex() {
     }
     return smallestIndex;
 }
-

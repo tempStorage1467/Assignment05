@@ -1,8 +1,9 @@
 /*******************************************************
  * File: pqueue-doublylinkedlist.h
  *
- * A priority queue class backed by an unsorted, doubly-linked
- * list.
+ * Name: Eric Beach
+ * Section: Dawson Zhou
+ * A priority queue class backed by an unsorted, doubly-linked list.
  */
 #ifndef PQueue_DoublyLinkedList_Included
 #define PQueue_DoublyLinkedList_Included
@@ -53,12 +54,16 @@ public:
 	string dequeueMin();
 
 private:
-	// TODO: Fill this in with the implementation of your doubly-linked list
-	// priority queue.  You can add any fields, types, or methods that you
-	// wish.
+    // doubly linked list
     DlCell* list;
+    
+    // the number of cells in the linked list
     int numCells;
+    
+    // find the smallest cell in the list
     DlCell* findMinCell();
+    
+    // print the linked list; useful for debugging
     void printLinkedList();
 };
 

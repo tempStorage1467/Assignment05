@@ -1,6 +1,8 @@
 /**********************************************
  * File: pqueue-heap.h
  *
+ * Name: Eric Beach
+ * Section: Dawson Zhou
  * A priority queue class backed by a binary heap.
  */
 #ifndef PQueue_Heap_Included
@@ -42,13 +44,29 @@ public:
 	string dequeueMin();
 
 private:
+    // Size of the queue
     int listSize;
+
+    // Num of elements that have been allocated for storage (eg., max capacity)
     int allozatedSize;
+
+    // array of strings; used to store the data in the binary heap tree
     string* storage;
+    
+    // initial capacity in the heap tree
     const int DEFAULT_CAPACITY = 32;
+    
+    // expand the number of elements that can be stored
     void expandStorage();
+    
+    // bubble down from an element, therby ensuring that all children are
+    //   larger than their parent
     void recursivelyBubbleDown(int elemNum);
+    
+    // swap elements
     void swapElem(int elemNumA, int elemNumB);
+
+    // print the tree, which is useful for debugging
     void printTree();
 };
 

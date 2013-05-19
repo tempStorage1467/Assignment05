@@ -1,8 +1,9 @@
 /*******************************************************
  * File: pqueue-linkedlist.h
  *
- * A priority queue class backed by a sorted, singly-linked
- * list.
+ * Name: Eric Beach
+ * Section: Dawson Zhou
+ * A priority queue class backed by a sorted, singly-linked list.
  */
 #ifndef PQueue_LinkedList_Included
 #define PQueue_LinkedList_Included
@@ -47,15 +48,16 @@ public:
 	 * priority queue.
 	 */
 	string dequeueMin();
-	
+
 private:
-	// TODO: Fill this in with the implementation of your sorted linked list
-	// priority queue.  You can add any fields, types, or methods that you
-	// wish.
+    // Linked list
     Cell* list;
+
+    // Size of the linked list. Instance variable used to store this so that
+    //   size can operate in O(1) and not have to traverse the entire list.
     int listSize;
-    
-    // useful for debugging
+
+    // helper function useful for debugging
     void printLinkedList();
 };
 

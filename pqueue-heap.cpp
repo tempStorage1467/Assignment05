@@ -1,31 +1,50 @@
 /*************************************************************
  * File: pqueue-heap.cpp
  *
+ * Name: Eric Beach
+ * Section: Dawson Zhou
  * Implementation file for the HeapPriorityQueue class.
  */
  
 #include "pqueue-heap.h"
 #include "error.h"
 
+/*
+ * Constructor to initialize an array of strings.
+ */
 HeapPriorityQueue::HeapPriorityQueue() {
     storage = new string[DEFAULT_CAPACITY];
     allozatedSize = DEFAULT_CAPACITY;
     listSize = 0;
 }
 
+/*
+ * Destructor to deallocate memory for strings.
+ */
 HeapPriorityQueue::~HeapPriorityQueue() {
     delete[] storage;
 }
 
+/*
+ * Return the size of the queue.
+ */
 int HeapPriorityQueue::size() {
     return listSize;
 }
 
+/*
+ * Return whether the queue is empty.
+ */
 bool HeapPriorityQueue::isEmpty() {
     return (size() == 0);
 }
 
+/*
+ * Add a new string to the queue. Add it such that each parent is smaller
+ *   than its children.
+ */
 void HeapPriorityQueue::enqueue(string value) {
+    // Check whether underlying array needs to be expanded to store new elems
     if (listSize + 1 >= allozatedSize) {
         expandStorage();
     }
@@ -60,11 +79,17 @@ void HeapPriorityQueue::enqueue(string value) {
     printTree();
 }
 
+/*
+ * Return the smallest element in the queue.
+ */
 string HeapPriorityQueue::peek() {
     if (isEmpty()) error("no elements in queue");
 	return storage[1];
 }
 
+/*
+ * Remove the smallest element in the queue and return it.
+ */
 string HeapPriorityQueue::dequeueMin() {
     if (isEmpty()) error("no elements in queue");
     // Swap top and bottom elements
@@ -80,6 +105,10 @@ string HeapPriorityQueue::dequeueMin() {
 	return minElem;
 }
 
+/*
+ * Recursively bubble down the tree. Ensure that for a given element number,
+ *  all its children are smaller than that specific elemment number.
+ */
 void HeapPriorityQueue::recursivelyBubbleDown(int elemNum) {
     if ((elemNum * 2) > listSize) {
         // Base Case: Reached Bottom of Tree; No Children
@@ -111,12 +140,18 @@ void HeapPriorityQueue::recursivelyBubbleDown(int elemNum) {
     }
 }
 
+/*
+ * Swap two elements in the underlying storage awway.
+ */
 void HeapPriorityQueue::swapElem(int elemNumA, int elemNumB) {
     string temp = storage[elemNumB];
     storage[elemNumB] = storage[elemNumA];
     storage[elemNumA] = temp;
 }
 
+/*
+ * Expand the capacity in the underlying storage array.
+ */
 void HeapPriorityQueue::expandStorage() {
     string* temp = new string[allozatedSize * 2];
     copy(storage, storage + allozatedSize, temp);
@@ -125,8 +160,11 @@ void HeapPriorityQueue::expandStorage() {
     allozatedSize *= 2;
 }
 
+/*
+ * Print the heap tree, which is useful for debugging.
+ */
 void HeapPriorityQueue::printTree() {
-    return;
+    //return;
     cout << "List Size: " << listSize << endl;
     for (int elemNum = 1; elemNum <= listSize; elemNum *= 2) {
         string space = "";
