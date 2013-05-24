@@ -1,15 +1,25 @@
 /********************************************************************
  * File: pqueue-test.cpp
  *
+ * Name: Eric Beach
+ * Section: Dawson Zhou
+ *
  * Testing code for the various priority queue classes.  These tests
  * are written as template functions so that they can operate over
  * all different types of priority queues.
+ *
+ * I wrote two extensions: (1) Time testing. I wrote a test suite, 11,
+ *   that will perform a number of operations on all the PQueue types
+ *   and clock them, measuring the performance.
+ *   (2) I wrote an edge-case test that will try to simulate some of the
+ *   toughest scenarios to code that I encourted when I was writing the
+ *   initial solutions.
  */
 #include "pqueue-vector.h"
 #include "pqueue-linkedlist.h"
 #include "pqueue-doublylinkedlist.h"
 #include "pqueue-heap.h"
-#include "pqueue-extra.h"
+#include "pqueue-fibonacciheap.h"
 #include "random.h"
 #include "simpio.h"
 #include "vector.h"
@@ -83,7 +93,84 @@ string randomString(int length = 16) {
 	}
 	return result;
 }
- 
+
+/*
+ * Function: runSpeedTest
+ * ------------------------------------------------------------
+ * Return the number of seconds to perform nIter iterations of inserting
+ *   then removing wordsPerIteration words from a queue.
+ */
+template <typename PQueue>
+   double runSpeedTests(const int nIter, const int wordsPerIteration) {
+   
+       /* Clock the execution of the program Priority Queue */
+       double beginTime = clock();
+       
+       for (int iteration = 0; iteration < nIter; iteration++) {
+           Vector<string> randomValues;
+           for (int i = 0; i < wordsPerIteration; i++) {
+               randomValues += randomString();
+           }
+    
+           /* Use C++'s provided sorting routine to sort these values. */
+           sort(randomValues.begin(), randomValues.end(), greater<string>());
+           
+           /* Confirm each comes back correctly. */
+           reverse(randomValues.begin(), randomValues.end());
+           
+           
+           /* Feed these values into priority queue and pull them back out. */
+           PQueue queue;
+           foreach (string value in randomValues)
+             queue.enqueue(value);
+       
+           for (int i = 0; i < randomValues.size(); i++)
+               queue.dequeueMin();
+
+       }
+       
+       /* Stop the clock */
+       double endTime = clock();
+       
+       /* Compute the time difference and return it */
+       return (endTime - beginTime) / CLOCKS_PER_SEC;
+}
+
+/*
+ * Function: runSpeedTests
+ * ------------------------------------------------------------
+ * Add and then remove many words from each type of priority queue.
+ *   Perform this operation multiple times and clock the total time
+ *   taken. Print out this time for each priority queue.
+ */
+void runSpeedTests() {
+    const int NUM_ITERATIONS = 1;
+    
+    // using a large number of words per iteration also serves as a
+    //   check against memory leaks in the program
+    const int WORDS_PER_ITERATION = 30000;
+
+    double vectorSpeed =
+    runSpeedTests<VectorPriorityQueue> (NUM_ITERATIONS, WORDS_PER_ITERATION);
+    cout << "Vector: " << vectorSpeed << " seconds" << endl;
+    
+    double linkedListSpeed =
+      runSpeedTests<LinkedListPriorityQueue> (NUM_ITERATIONS, WORDS_PER_ITERATION);
+    cout << "Linked List: " << linkedListSpeed << " seconds" << endl;
+    
+    double dLinkedListSpeed =
+      runSpeedTests<DoublyLinkedListPriorityQueue> (NUM_ITERATIONS, WORDS_PER_ITERATION);
+    cout << "Double Linked List: " << dLinkedListSpeed << " seconds" << endl;
+
+    double heapPriorityQueueSpeed =
+      runSpeedTests<HeapPriorityQueue> (NUM_ITERATIONS, WORDS_PER_ITERATION);
+    cout << "Heap Priority Queue: " << heapPriorityQueueSpeed << " seconds" << endl;
+    
+    double fibHeapSpeed =
+      runSpeedTests<FibonacciHeapPriorityQueue> (NUM_ITERATIONS, WORDS_PER_ITERATION);
+    cout << "Fib Heap: " << fibHeapSpeed << " seconds" << endl;
+}
+
 
 /* Function: basicStructuralTests
  * ------------------------------------------------------------
@@ -929,9 +1016,93 @@ template <typename PQueue>
 	void myVeryOwnTests() {
 	beginTest("My Very Own Tests");
 	
-	PQueue queue;
-	
-	/* TODO: Add your own tests here, if you'd like. */
+    /*
+     In writing these programs and manually testing them, I found that
+       the most likely to fail situations occurred with one, two, or a few
+       elements.
+     */
+        
+    try {
+        // Test Corner Cases With One Element
+        PQueue queue1;
+        string s1 = "a";
+        queue1.enqueue(s1);
+
+        checkCondition(queue1.peek() == s1,
+                       "Peeked at single element vector successfully");
+        
+        checkCondition(queue1.dequeueMin() == s1,
+                       "Pulled single element vector successfully");
+        
+        // Test Corner Cases With Two Elements
+        PQueue queue2;
+        checkCondition(queue2.size() == 0,
+                       "Size is proper");
+
+        
+        checkCondition(queue2.isEmpty() == true,
+                       "Size is proper");
+        
+        string s2a = "z";
+        string s2b = "a";
+        queue2.enqueue(s2a);
+        queue2.enqueue(s2b);
+
+        checkCondition(queue2.peek() == s2b,
+                       "Peeked at single element vector successfully");
+        checkCondition(queue2.size() == 2, "Size is proper");
+        
+        checkCondition(queue2.dequeueMin() == s2b,
+                       "Pulled off element successfully");
+
+        checkCondition(queue2.size() == 1,
+                       "Size is proper");
+        
+        checkCondition(queue2.dequeueMin() == s2a,
+                       "Pulled off element successfully");
+        
+        // Test Corner Cases With Four Elements
+        PQueue queue3;
+        string s3a = "z";
+        string s3b = "b";
+        string s3c = "a";
+        string s3d = "c";
+        queue3.enqueue(s3a);
+        queue3.enqueue(s3b);
+        queue3.enqueue(s3c);
+        queue3.enqueue(s3d);
+        
+        checkCondition(queue3.peek() == s3c,
+                       "Peeked at single element vector successfully");
+        checkCondition(queue3.size() == 4, "Size is proper");
+        
+        checkCondition(queue3.dequeueMin() == s3c,
+                       "Pulled off element successfully");
+        
+        checkCondition(queue3.size() == 3,
+                       "Size is proper");
+        
+        checkCondition(queue3.dequeueMin() == s3b,
+                       "Pulled off element successfully");
+        
+        checkCondition(queue3.isEmpty() == false,
+                       "Not empty");
+        
+        checkCondition(queue3.dequeueMin() == s3d,
+                       "Pulled off element successfully");
+        
+        checkCondition(queue3.dequeueMin() == s3a,
+                       "Pulled off element successfully");
+        
+        checkCondition(queue3.isEmpty() == true,
+                       "Empty");
+	} catch (ErrorException& e) {
+		cout << "TEST FAILURE: Unexpected exception: " << e.getMessage() << endl;
+	} catch (exception& e) {
+		cout << "TEST FAILURE: Unexpected exception: " << e.what() << endl;
+	} catch (...) {
+		cout << "TEST FAILURE: Unknown exception." << endl;
+	}
 	
 	endTest("My Very Own Tests");	
 }
@@ -952,8 +1123,7 @@ template <typename PQueue>
 	sortDuplicateTests<PQueue> ();
 	reuseTests<PQueue> ();
 	
-	/* If you want to run your own custom tests, uncomment this line. */
-	// myVeryOwnTests<PQueue> ();
+	myVeryOwnTests<PQueue> ();
 }
 
 /* Function: printReplInstructions
@@ -1065,8 +1235,9 @@ enum {
 	TEST_DOUBLY_LINKED_LIST,
 	REPL_HEAP,
 	TEST_HEAP,
-	REPL_EXTRA,
-	TEST_EXTRA,
+	REPL_FIBONACCI,
+	TEST_FIBONACCI,
+    SPEED_TEST,
 	QUIT
 };
 
@@ -1085,8 +1256,9 @@ void displayMenu() {
 	cout << TEST_DOUBLY_LINKED_LIST << ": Automatically test DoublyLinkedListPriorityQueue" << endl;
 	cout << REPL_HEAP << ": Manually test HeapPriorityQueue" << endl;
 	cout << TEST_HEAP << ": Automatically test HeapPriorityQueue" << endl;
-	cout << REPL_EXTRA << ": Manually test ExtraPriorityQueue" << endl;
-	cout << TEST_EXTRA << ": Automatically test ExtraPriorityQueue" << endl;
+	cout << REPL_FIBONACCI << ": Manually test FibonacciHeapPriorityQueue" << endl;
+	cout << TEST_FIBONACCI << ": Automatically test FibonacciHeapPriorityQueue" << endl;
+    cout << SPEED_TEST << ": Test speeds of various queue implementations (takes a while)" << endl;
 	cout << QUIT << ": Quit" << endl;
 }
 
@@ -1123,12 +1295,15 @@ int main() {
 		case REPL_HEAP:
 			replTestPriorityQueue<HeapPriorityQueue> ();
 			break;
-		case TEST_EXTRA:
-			testPriorityQueue<ExtraPriorityQueue> ();
+		case TEST_FIBONACCI:
+			testPriorityQueue<FibonacciHeapPriorityQueue> ();
 			break;
-		case REPL_EXTRA:
-			replTestPriorityQueue<ExtraPriorityQueue> ();
+		case REPL_FIBONACCI:
+			replTestPriorityQueue<FibonacciHeapPriorityQueue> ();
 			break;
+        case SPEED_TEST:
+            runSpeedTests();
+            break;
 		case QUIT:
 			return 0;
 		default:

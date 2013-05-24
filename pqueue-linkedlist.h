@@ -3,6 +3,7 @@
  *
  * Name: Eric Beach
  * Section: Dawson Zhou
+ *
  * A priority queue class backed by a sorted, singly-linked list.
  */
 #ifndef PQueue_LinkedList_Included

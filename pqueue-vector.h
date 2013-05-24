@@ -15,13 +15,7 @@ using namespace std;
 /* A class representing a priority queue backed by an unsorted Vector.
  */
 class VectorPriorityQueue {
-public:
-	/* Constructs a new, empty priority queue backed by a vector. */
-	VectorPriorityQueue();
-	
-	/* Cleans up all memory allocated by this priority queue. */
-	~VectorPriorityQueue();
-	
+  public:	
 	/* Returns the number of elements in the priority queue. */
 	int size();
 	
@@ -41,7 +35,7 @@ public:
 	 */
 	string dequeueMin();
 
-private:
+  private:
     // vector to store queue elements
     Vector<string> storage;
 

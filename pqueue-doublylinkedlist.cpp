@@ -41,7 +41,7 @@ bool DoublyLinkedListPriorityQueue::isEmpty() {
 }
 
 /*
- * Add a string to the list
+ * Add a string to the list.
  */
 void DoublyLinkedListPriorityQueue::enqueue(string value) {
     DlCell* newCell = new DlCell;
@@ -56,6 +56,8 @@ void DoublyLinkedListPriorityQueue::enqueue(string value) {
         newCell->next = list;
         list = newCell;
     }
+    
+    // new cell added, so increment the total cell count
     numCells++;
 }
 
@@ -94,6 +96,8 @@ string DoublyLinkedListPriorityQueue::dequeueMin() {
     
     // deallocate memory for the removed cell
     delete toRemove;
+    
+    // reduce the total count of cells in the list
     numCells--;
 	return val;
 }
@@ -104,6 +108,10 @@ string DoublyLinkedListPriorityQueue::dequeueMin() {
 DlCell* DoublyLinkedListPriorityQueue::findMinCell() {
     DlCell* smallestCell = list;
     int i = 0;
+    
+    // iterate over the list looking for the smallest cell
+    // this step is required as the assignment calls for storing the data
+    //   in an unsorted doubly linked list.
     for (DlCell* nextCell = list;
          i < numCells;
          nextCell = nextCell->next, i++) {
@@ -118,7 +126,6 @@ DlCell* DoublyLinkedListPriorityQueue::findMinCell() {
  * Print the linked list, helpful for debugging.
  */
 void DoublyLinkedListPriorityQueue::printLinkedList() {
-    return;
     cout << "going to print linked list of size " << endl;
     for (DlCell* current = list;
          current != NULL;

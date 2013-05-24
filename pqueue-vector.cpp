@@ -34,9 +34,8 @@ void VectorPriorityQueue::enqueue(string value) {
  * Look at the value of the next element to be dequeued.
  */
 string VectorPriorityQueue::peek() {
-    if (isEmpty()) {
-        error("The queue is empty");
-    }
+    if (isEmpty()) error("The queue is empty");
+
     int smallestIndex = getSmallestIndex();
     return storage[smallestIndex];
 }
@@ -45,9 +44,8 @@ string VectorPriorityQueue::peek() {
  * Remove and return the smallest element in the queue.
  */
 string VectorPriorityQueue::dequeueMin() {
-    if (isEmpty()) {
-        error("The queue is empty");
-    }
+    if (isEmpty()) error("The queue is empty");
+
     int smallestIndex = getSmallestIndex();
     string val = storage[smallestIndex];
     storage.remove(smallestIndex);
@@ -60,6 +58,9 @@ string VectorPriorityQueue::dequeueMin() {
 int VectorPriorityQueue::getSmallestIndex() {
     if (isEmpty()) error("The queue is empty");
     int smallestIndex = 0;
+    
+    // traverse the list and continually check whether the next cell
+    //   is smaller than the currently smallest cell
     for (int i = 0; i < storage.size(); i++) {
         if (storage[i] < storage[smallestIndex]) {
             smallestIndex = i;

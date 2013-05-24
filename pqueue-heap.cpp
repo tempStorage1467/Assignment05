@@ -13,6 +13,8 @@
  * Constructor to initialize an array of strings.
  */
 HeapPriorityQueue::HeapPriorityQueue() {
+    // start with a default size, which can be expanded later
+    //   if the size of the heap grows
     storage = new string[DEFAULT_CAPACITY];
     allozatedSize = DEFAULT_CAPACITY;
     listSize = 0;
@@ -51,21 +53,22 @@ void HeapPriorityQueue::enqueue(string value) {
 
     // Bubble Up
     /*
-     Start at the bottom of the tree in the next element position, which
-       is the list size + 1 (this takes into account the fact that the first
-       node in the tree is at element 1 and not element 0.
-     Ensure that the nextLocation to check for insertion is always
-       greater than 1 (which is the top of the tree) and make sure the
-       value we're trying to insert is smaller than its parent (otherwise
-       we will go too far up the tree in finding the final location for the
-       next element we're trying to insert).
-     As we move up the tree, as long as the child in the path we're traversing
-       up from the new element to the root is smaller than its parent,
-       we swap such that a child is always lexically larger than its parent.
+     Note: I do not strictly follow the assignment here in terms of how
+       to implement the Bubble Up. There is a slightly faster way to implement
+       this that I implemented as an extension. It does not require swapping
+       elements as the assignment's methodology does.
+       In performing speed tests, this method consistently performed a tad
+       faster. For "completeness", I have at the bottom of this function a
+       commmented-out implementation that is strictly according to the book
+       and passes all unit tests.
+     
+     This insertion step works by starting at the bottom of the tree and
+       pulling down the tree to create room for the new cell at the proper
+       location, thereby requiring no swaps.
      */
     int nextLocation;
     for (nextLocation = ++listSize;
-         nextLocation > 1 && value < storage[nextLocation/2];
+         nextLocation > 1 && value < storage[nextLocation / 2];
          nextLocation /= 2) {
         storage[nextLocation] = storage[nextLocation / 2];
     }
@@ -76,7 +79,20 @@ void HeapPriorityQueue::enqueue(string value) {
        to be larger than its child.
      */
     storage[nextLocation] = value;
-    printTree();
+
+    /* Below is an implementation of Bubble Up that is structly according
+         to the assignment.
+     int nextLocation;
+     nextLocation = ++listSize;
+     storage[nextLocation] = value;
+     for (nextLocation = listSize;
+          nextLocation > 1 && value < storage[nextLocation / 2];
+          nextLocation /= 2) {
+         string temp = storage[nextLocation / 2];
+         storage[nextLocation / 2] = storage[nextLocation];
+         storage[nextLocation] = temp;
+     }
+     */
 }
 
 /*
@@ -98,7 +114,7 @@ string HeapPriorityQueue::dequeueMin() {
     storage[listSize] = "";
     listSize--;
 	
-    // Bubble Down as Heap is Unsorted
+    // Bubble Down as Heap is unsorted
     recursivelyBubbleDown(1);
     
     // Return min elem
@@ -107,7 +123,7 @@ string HeapPriorityQueue::dequeueMin() {
 
 /*
  * Recursively bubble down the tree. Ensure that for a given element number,
- *  all its children are smaller than that specific elemment number.
+ *  all its children are larger than that specific elemment number.
  */
 void HeapPriorityQueue::recursivelyBubbleDown(int elemNum) {
     if ((elemNum * 2) > listSize) {
@@ -164,7 +180,6 @@ void HeapPriorityQueue::expandStorage() {
  * Print the heap tree, which is useful for debugging.
  */
 void HeapPriorityQueue::printTree() {
-    //return;
     cout << "List Size: " << listSize << endl;
     for (int elemNum = 1; elemNum <= listSize; elemNum *= 2) {
         string space = "";

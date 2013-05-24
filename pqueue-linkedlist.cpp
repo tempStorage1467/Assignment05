@@ -3,6 +3,7 @@
  *
  * Name: Eric Beach
  * Section: Dawson Zhou
+ *
  * Implementation file for the LinkedListPriorityQueue class.
  */
  
@@ -51,6 +52,9 @@ void LinkedListPriorityQueue::enqueue(string value) {
     Cell* newCell = new Cell;
 	newCell->value = value;
 
+    // since the assignment requires storing in a sorted, singly linked
+    //   list, inserting the new cell requires finding the proper location
+    //   to insert the new cell, which requires traversing the list
     if (listSize == 0) {
         list = newCell;
     } else if (newCell->value < list->value) {
@@ -65,13 +69,12 @@ void LinkedListPriorityQueue::enqueue(string value) {
             curr = curr->next;
             if (curr != NULL) {
             }
-        } while (curr != NULL && newCell->value >curr->value);
+        } while (curr != NULL && newCell->value > curr->value);
 
         newCell->next = last->next;
         last->next = newCell;
     }
     listSize++;
-    printLinkedList();
 }
 
 /*
@@ -87,7 +90,6 @@ string LinkedListPriorityQueue::peek() {
  */
 string LinkedListPriorityQueue::dequeueMin() {
 	if (isEmpty()) error("Cannot peek at an empty list");
-    printLinkedList();
     Cell* currentSmallest = list;
     string val = currentSmallest->value;
     Cell* nextSmallest = list->next;
@@ -96,7 +98,6 @@ string LinkedListPriorityQueue::dequeueMin() {
     // delete the allocated memory to prevent a leak
     delete currentSmallest;
     listSize--;
-    printLinkedList();
 	return val;
 }
 
@@ -104,7 +105,6 @@ string LinkedListPriorityQueue::dequeueMin() {
  * Helper function used for debugging.
  */
 void LinkedListPriorityQueue::printLinkedList() {
-    // return;
     cout << "going to print linked list of size " << listSize << endl;
     for (Cell* current = list;
          current != NULL;
