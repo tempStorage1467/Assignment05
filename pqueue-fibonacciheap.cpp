@@ -142,7 +142,7 @@ string FibonacciHeapPriorityQueue::dequeueMin() {
     if (numCells > 0) {
         consolidate();
     }
-    
+
     // return the minimum value
     return val;
 }
